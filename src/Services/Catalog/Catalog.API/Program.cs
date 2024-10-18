@@ -8,6 +8,7 @@ builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(typeof(Program).Assembly);
     config.AddOpenBehavior(typeof(ValidationBehavior<,>)); //validation middleware
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 builder.Services.AddMarten(opts =>
 {
