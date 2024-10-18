@@ -1,5 +1,4 @@
-using BuildingBlocks.Behaviors;
-using FluentValidation;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +16,13 @@ builder.Services.AddMarten(opts =>
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly); //fluent validation
 
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
 
 //Configure http req pipeline
 app.MapCarter(); //ICarterModule implementasyonlarýný bizim için bulur. Ve minimal api'leri kullanýlýr hale getirecek
+
+app.UseExceptionHandler(options => { }); //di'da eklediðimiz customexception'a güvendiðimizi belirtir bu kullaným
+
 app.Run();
