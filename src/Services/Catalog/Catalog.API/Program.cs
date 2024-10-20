@@ -1,5 +1,3 @@
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 //DI Container
@@ -14,6 +12,11 @@ builder.Services.AddMarten(opts =>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions(); //Crud operasyonlarý için lightweightsession kullanacaðýz
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.InitializeMartenWith<CatalogInitialData>(); //eðer dev ortamýndaysak seed data eklenecek. Prod ortamýnda eklenmesi önerilmez
+}
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly); //fluent validation
 
