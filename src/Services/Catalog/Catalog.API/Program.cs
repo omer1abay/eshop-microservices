@@ -1,3 +1,5 @@
+using HealthChecks.UI.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //DI Container
@@ -22,11 +24,19 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly); //fluent v
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+
 var app = builder.Build();
 
 //Configure http req pipeline
 app.MapCarter(); //ICarterModule implementasyonlarýný bizim için bulur. Ve minimal api'leri kullanýlýr hale getirecek
 
 app.UseExceptionHandler(options => { }); //di'da eklediðimiz customexception'a güvendiðimizi belirtir bu kullaným
+
+app.UseHealthChecks("/health",new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();

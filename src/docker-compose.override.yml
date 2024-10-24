@@ -6,13 +6,16 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=catalogdb;Port=5432;Database=catalogdb;Username=admin;Password=omer1bay;Include Error Detail=true
+    depends_on:
+      - catalogdb
     ports:
-      - "8080"
-      - "8081"
+      - "6000:8080"
+      - "6060:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-  postgres:
+  catalogdb:
     container_name: catalogdb
     restart: always
     ports:
