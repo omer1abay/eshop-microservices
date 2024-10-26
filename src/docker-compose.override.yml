@@ -26,3 +26,14 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=omer1bay
       - POSTGRES_DB=catalogdb  
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=omer1bay
+      - POSTGRES_DB=basketdb
