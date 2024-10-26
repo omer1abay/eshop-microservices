@@ -11,7 +11,7 @@ public class StoreBasketEndpoints : ICarterModule
     {
         app.MapPost("/basket", async (StoreBasketRequest request, ISender sender) =>
         {
-            var result = request.Adapt<StoreBasketRequest>();
+            var result = request.Adapt<StoreBasketCommand>();
 
             var command = await sender.Send(result);
 
@@ -23,6 +23,6 @@ public class StoreBasketEndpoints : ICarterModule
         .Produces<StoreBasketResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Store Basket")
-        .WithDescription("Store Basket"); ;
+        .WithDescription("Store Basket");
     }
 }
