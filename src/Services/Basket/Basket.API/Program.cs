@@ -1,3 +1,5 @@
+using HealthChecks.UI.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,6 +28,10 @@ builder.Services.AddStackExchangeRedisCache(opts =>
 //builder.Services.AddScoped<IBasketRepository, CachedBasketRepository>(); //if we implement the cachedbasketrepository like that, 20th line of program.cs will be deprecated so that's why we have to use decorator pattern 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
+    .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,6 +39,11 @@ var app = builder.Build();
 app.MapCarter();
 
 app.UseExceptionHandler(opts => { });
+
+app.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
 
