@@ -37,3 +37,8 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=omer1bay
       - POSTGRES_DB=basketdb
+  distributedcache:
+    container_name: distributedcache
+    restart: always
+    ports:
+      - "6379:6379"

@@ -10,6 +10,8 @@ services:
     image: postgres
   basketdb:
     image: postgres
+  distributedcache:
+    image: redis
 volumes:
   postgres_volume:
   postgres_basket:

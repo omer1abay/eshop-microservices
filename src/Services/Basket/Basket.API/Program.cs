@@ -18,7 +18,12 @@ builder.Services.AddMarten(opts =>
 }).UseLightweightSessions();
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
-
+builder.Services.Decorate<IBasketRepository, CachedBasketRepository>(); //decorator pattern
+builder.Services.AddStackExchangeRedisCache(opts =>
+{
+    opts.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+//builder.Services.AddScoped<IBasketRepository, CachedBasketRepository>(); //if we implement the cachedbasketrepository like that, 20th line of program.cs will be deprecated so that's why we have to use decorator pattern 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
